@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 import json
 
 def find_tokens(path):
@@ -36,4 +37,7 @@ def main():
         json.dump(data, f, indent=4)
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) > 1:
+        if sys.argv[1] in ['--run', '-r']:
+            main()
+            print('Done!')
