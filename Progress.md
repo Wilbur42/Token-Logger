@@ -3,11 +3,11 @@
 ## In Progress
 
 ## To Do
-[ ] Migrate to ArgParse
 [ ] Add support for other browsers
 [ ] Add support for other operating systems
 
 ## Done
+[+] Migrate to ArgParse
 [+] Command Line interaction
 [+] Get token from local machine (Yandex/Windows)
 [+] Get token from local machine (Brave/Windows)

