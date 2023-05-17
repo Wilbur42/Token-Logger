@@ -2,6 +2,7 @@ import os
 import re
 import json
 import argparse
+from rich.progress import Progress
 
 def find_tokens(path):
     path += '\\Local Storage\\leveldb'
@@ -29,9 +30,12 @@ def main(args):
     }
 
     data = {}
-    for platform, path in paths.items():
-        if os.path.exists(path):
-            data[platform] = list(find_tokens(path))
+    with Progress() as progress:
+        task = progress.add_task("[cyan]Gathering Tokens...", total=len(paths))
+        for platform, path in paths.items():
+            if os.path.exists(path):
+                data[platform] = list(find_tokens(path))
+            progress.advance(task)
 
     with open(args.output_file, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4)

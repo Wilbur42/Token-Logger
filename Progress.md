@@ -7,6 +7,7 @@
 [ ] Add support for other operating systems
 
 ## Done
+[+] Progress Bar
 [+] Migrate to ArgParse
 [+] Command Line interaction
 [+] Get token from local machine (Yandex/Windows)
