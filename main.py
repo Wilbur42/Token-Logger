@@ -40,17 +40,25 @@ class TokenFinder:
 
     def run(self):
         data = {}
+        statistics = {}
+
         with Progress() as progress:
             task = progress.add_task("[cyan]Gathering Tokens...", total=len(self.paths))
             for platform, path in self.paths.items():
                 if os.path.exists(path):
-                    data[platform] = list(self.find_tokens(path))
+                    tokens = list(self.find_tokens(path))
+                    data[platform] = tokens
+                    statistics[platform] = len(tokens)
                 progress.advance(task)
 
         with open(self.output_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
 
         print('Done!')
+
+        print('\nStats:')
+        for platform, count in statistics.items():
+            print(f'{platform}: {count} token(s)')
 
 
 if __name__ == '__main__':
