@@ -6,7 +6,7 @@ from rich.progress import Progress
 
 class TokenFinder:
 
-    def __init__(self, output_file):
+    def __init__(self, output_file, custom_paths=None):
         self.output_file = output_file
         self.local = os.getenv('LOCALAPPDATA')
         self.roaming = os.getenv('APPDATA')
@@ -19,6 +19,9 @@ class TokenFinder:
             'Brave': self.local + '\\BraveSoftware\\Brave-Browser\\User Data\\Default',
             'Yandex': self.local + '\\Yandex\\YandexBrowser\\User Data\\Default'
         }
+
+        if custom_paths:
+            self.paths.update(custom_paths)
 
     def __enter__(self):
         return self
@@ -64,7 +67,14 @@ class TokenFinder:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--output-file', '-o', default='temp.json', help='Output file name')
+    parser.add_argument('--custom-paths', '-c', nargs='*', help='Custom paths (platform=path)')
     args = parser.parse_args()
 
-    with TokenFinder(args.output_file) as token_finder:
+    custom_paths = {}
+    if args.custom_paths:
+        for custom_path in args.custom_paths:
+            platform, path = custom_path.split('=')
+            custom_paths[platform] = path
+
+    with TokenFinder(args.output_file, custom_paths) as token_finder:
         token_finder.run()
