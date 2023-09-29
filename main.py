@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import enum
 import argparse
 from rich.progress import Progress
 
@@ -63,10 +64,38 @@ class TokenFinder:
         for platform, count in statistics.items():
             print(f'{platform}: {count} token(s)')
 
+# class Arg(enum.Enum):
+#     def __init__(self, options=None, default=None, description=None, required=True):
+#         self.options = options
+#         self.default = default
+#         self.description = description
+#         self.required = required
+
+# class ArgumentParser:
+#     def __init__(self):
+#         self.arguments = []
+
+#     def add_argument(self, options=None, default=None, description=None, required=True):
+#         self.arguments.append(Arg(options, default, description, required))
+
+#     def parse_args(self):
+#         args = {}
+#         for arg in self.arguments:
+#             if arg.options:
+#                 for option in arg.options:
+#                     if option.startswith('--'):
+#                         args[option[2:]] = arg.default
+#                     elif option.startswith('-'):
+#                         args[option[1:]] = arg.default
+#             else:
+#                 args[arg] = arg.default
+
+#         return args
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--output-file', '-o', default='temp.json', help='Output file name')
+    parser.add_argument('--output-file', '-o', default='output.json', help='Output file name')
     parser.add_argument('--custom-paths', '-c', nargs='*', help='Custom paths (platform=path)')
     args = parser.parse_args()
 
